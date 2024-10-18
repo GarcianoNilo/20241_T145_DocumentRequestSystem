@@ -1,0 +1,19 @@
+{
+  "name": "20241_t145_documentrequestsystem",
+  "version": "1.0.0",
+  "description": "",
+  "main": "document.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "doc_run": "nodemon document.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}
