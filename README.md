@@ -1,15 +1,15 @@
 # DocumentRequestSystem
 
-# Section Code
+# Section Code:
 # T145
 
-# System Title
+# System Title:
 # Document Request System
 
-# System Description
+# System Description:
 # This system aims to make it easier for departments and faculties as well as the QAO to request, monitor, and manage official papers. 
 
-# Group Member
+# Group Member:
 # Culibar, James Cyrel M.
 # Garciano, Nilo Jr. G.
 # Maternal, Daisy Joy
