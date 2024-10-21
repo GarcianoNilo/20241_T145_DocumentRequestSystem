@@ -10,8 +10,9 @@ Document Request System
 This system aims to make it easier for departments and faculties as well as the QAO to request, monitor, and manage official papers. 
 
 # Group Member:
-Culibar, James Cyrel M. \n
-Garciano, Nilo Jr. G. \n
-Maternal, Daisy Joy \n
-Raterta, Noel \n
+Culibar, James Cyrel M. <br>
+Garciano, Nilo Jr. G. <br>
+Maternal, Daisy Joy <br>
+Raterta, Noel <br>
 Yosores, Joshua James G.
+ 
