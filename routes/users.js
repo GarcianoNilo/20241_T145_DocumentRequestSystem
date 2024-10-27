@@ -1,17 +1,30 @@
+// routes/document.js
 const express = require('express');
+const Document = require('../models/document');
+
 const router = express.Router();
-const users_services = require('../services/users_services');
 
-
-
-router.get('/users', (req, res) => {
-    res.send('Welcome, User');
+// Create a new document
+router.post('/', async (req, res) => {
+    try {
+        const document = new Document(req.body);
+        await document.save();
+        res.status(201).json(document);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
 });
 
+// Get all documents
+router.get('/', async (req, res) => {
+    try {
+        const documents = await Document.find();
+        res.status(200).json(documents);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
 
-router.get('/dashboard', users_services.dashboard);
-router.get('/documents', users_services.userDocuments);
-router.get('/request-history', users_services.requestHistory);
-router.get('/account', users_services.userAccount);
+// Additional document routes (e.g., update, delete) can go here
 
 module.exports = router;

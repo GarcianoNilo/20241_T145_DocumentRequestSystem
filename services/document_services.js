@@ -1,4 +1,4 @@
-const Document = require('./documentModel'); // Assuming you're using MongoDB with Mongoose
+const Document = require('../models/document'); // Assuming you're using MongoDB with Mongoose
 
 // Get all documents
 const getAllDocuments = async (req, res) => {

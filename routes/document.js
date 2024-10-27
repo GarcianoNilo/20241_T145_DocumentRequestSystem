@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const documentController = require('./documentController');
+const document_services = require('../services/document_services');
 
 // Define CRUD routes for document services
-router.get('/documents', documentController.getAllDocuments);
-router.get('/documents/:id', documentController.getDocumentById);
-router.post('/documents', documentController.uploadDocument);
-router.delete('/documents/:id', documentController.deleteDocument);
-router.patch('/documents/:id', documentController.updateDocument);
+router.get('/', document_services.getAllDocuments);
+router.get('/:id', document_services.getDocumentById);
+router.post('/', document_services.uploadDocument);
+router.delete('/:id', document_services.deleteDocument);
+router.patch('/:id', document_services.updateDocument);
 module.exports = router;
