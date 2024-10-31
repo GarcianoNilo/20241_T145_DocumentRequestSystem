@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Allura&family=Merienda:wght@300..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+.sidebar {
+    font-family: "Montserrat", sans-serif;
+}
+.custom-btn {
+    background-color: transparent;
+    border: none;
+    width: 100%;
+    text-align: left;
+    color: #000;
+}
