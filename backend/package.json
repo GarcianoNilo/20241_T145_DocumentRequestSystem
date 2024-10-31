@@ -5,15 +5,20 @@
   "main": "document.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "doc_run": "nodemon app.js"
+    "backend": "nodemon app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
-    "mongoose": "^8.7.3"
+    "express-session": "^1.18.1",
+    "google-auth-library": "^9.14.2",
+    "mongoose": "^8.7.3",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.7"

@@ -1,12 +1,11 @@
-// Middleware to ensure the user is authenticated
+// middleware/authMiddleware.js
 const ensureAuthenticated = (req, res, next) => {
-    if (req.isAuthenticated()) { // Assuming you're using Passport for authentication
+    if (req.isAuthenticated()) {
         return next();
     }
     res.status(401).json({ message: 'Please log in to access this resource' });
 };
 
-// Middleware to check if the user is an admin
 const ensureAdmin = (req, res, next) => {
     if (req.user && req.user.role === 'admin') {
         return next();
@@ -14,16 +13,10 @@ const ensureAdmin = (req, res, next) => {
     res.status(403).json({ message: 'Access denied: Admins only' });
 };
 
-// Middleware to check if the user is a regular user
-const ensureUser = (req, res, next) => {
-    if (req.user && req.user.role === 'user') {
-        return next();
-    }
-    res.status(403).json({ message: 'Access denied: Users only' });
-};
+// You may also have ensureUser defined, depending on your needs
 
 module.exports = {
     ensureAuthenticated,
     ensureAdmin,
-    ensureUser
+    // ensureUser, // Uncomment if used
 };

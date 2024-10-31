@@ -9,7 +9,7 @@ import Backdrop from './components/Backdrop.jsx';
 
 
 //API Keys for FUNCTIONALITY TESTING PURPOSES ONLY!
-const clientId = "790582912542-vimq5t0ojh5r5TO 1d4d7i5daqu2gb9ts2p.apps.googleusercontent.com";
+const clientId = "96467309918-sjb49jofskdnaffpravkqgu1o6p0a8eh.apps.googleusercontent.com";
 const recaptchaSiteKey = "6LdRb2kqAAAAAIFoEyyUBq6oPshF1LqQKGLuv3bP";
 
 function Login() {
@@ -18,12 +18,30 @@ function Login() {
   const { executeRecaptcha } = useGoogleReCaptcha();
 
   //Login Checker
-  const onSuccess = (credentialResponse) => {
-    console.log("Login Success:", credentialResponse);
+  const onSuccess = async (credentialResponse) => {
     if (credentialResponse.credential) {
-      alert("Login successful!");
+      try {
+        const response = await fetch("http://localhost:3000/login/google", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token: credentialResponse.credential })
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          alert("Login successful!");
+          window.location.href = data.redirectUrl; // Redirect based on user role
+        } else {
+          alert(data.message || "Login failed. Please try again.");
+        }
+      } catch (error) {
+        console.error("Login Error:", error);
+        alert("An error occurred. Please try again.");
+      }
     }
   };
+
+
   const onError = () => {
     console.log("Login Failed");
     alert("Login failed. Please try again.");

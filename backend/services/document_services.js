@@ -2,12 +2,10 @@ const mongoose = require('mongoose');
 const Document = require('../models/document'); // Assuming you're using MongoDB with Mongoose
 const Counter = require('../models/counter');
 
-mongoose.connect('mongodb+srv://2201104232:sp4d3kun015@database.dd08g.mongodb.net/?retryWrites=true&w=majority', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
+mongoose.connect('mongodb+srv://2201104232:sp4d3kun015@database.dd08g.mongodb.net/?retryWrites=true&w=majority')
     .then(() => console.log('Connected to MongoDB Atlas'))
     .catch(err => console.error('Failed to connect to MongoDB Atlas', err));
+
 
 const getNextSequenceValue = async (sequenceName) => {
     const counter = await Counter.findByIdAndUpdate(

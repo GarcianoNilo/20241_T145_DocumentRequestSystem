@@ -6,7 +6,6 @@ const userSchema = new mongoose.Schema({
     googleId: { type: String, unique: true },
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: false }, // Store hashed passwords
     role: { type: String, enum: ['admin', 'user'], default: 'user' },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }
