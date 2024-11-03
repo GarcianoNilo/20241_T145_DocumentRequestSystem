@@ -1,0 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Allura&family=Merienda:wght@300..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+.main-content {
+    font-family: "Montserrat", sans-serif;
+    padding: 30px;
+    min-height: 100vh;
+    padding: 2rem;
+}
+h2 {
+    font-family: "Montserrat", sans-serif;
+    font-weight: bolder;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9);
+}
