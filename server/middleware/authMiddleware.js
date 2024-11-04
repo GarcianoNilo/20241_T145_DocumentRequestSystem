@@ -1,24 +1,19 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-const authenticateUser = async (req, res, next) => {
-    const token = req.header('Authorization')?.replace('Bearer ', '');
+const authenticateUser = (req, res, next) => {
+    const token = req.headers['authorization'];
     if (!token) {
         return res.status(401).json({ message: 'No token provided' });
     }
 
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const user = await User.findById(decoded.id);
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+    jwt.verify(token, process.env.SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ message: 'Unauthorized' });
         }
-        req.user = user;
+        req.user = decoded; // Add user data to request
         next();
-    } catch (error) {
-        console.error('Error in authenticateUser middleware:', error);
-        res.status(401).json({ message: 'Invalid token' });
-    }
+    });
 };
 
 const isAdmin = async (req, res, next) => {

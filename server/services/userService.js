@@ -1,11 +1,10 @@
+// services/userService.js
 const User = require('../models/User');
 
-const getUser = async (req, res) => {
+// Get user by ID
+const getUser = async (id) => {
     try {
-        const user = await User.findById(req.params.id);
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
+        const user = await User.findById(id);
         return user;
     } catch (error) {
         console.error('Error getting user:', error);
@@ -13,7 +12,8 @@ const getUser = async (req, res) => {
     }
 };
 
-const getAllUsers = async (req, res) => {
+// Get all users
+const getAllUsers = async () => {
     try {
         const users = await User.find();
         return users;
@@ -23,12 +23,22 @@ const getAllUsers = async (req, res) => {
     }
 };
 
-const updateUser = async (req, res) => {
+// Create a new user
+const createUser = async (data) => {
     try {
-        const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
+        const user = new User(data);
+        await user.save();
+        return user;
+    } catch (error) {
+        console.error('Error creating user:', error);
+        throw error;
+    }
+};
+
+// Update user by ID
+const updateUser = async (id, data) => {
+    try {
+        const user = await User.findByIdAndUpdate(id, data, { new: true });
         return user;
     } catch (error) {
         console.error('Error updating user:', error);
@@ -36,12 +46,10 @@ const updateUser = async (req, res) => {
     }
 };
 
-const deleteUser = async (req, res) => {
+// Delete user by ID
+const deleteUser = async (id) => {
     try {
-        const user = await User.findByIdAndDelete(req.params.id);
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
+        const user = await User.findByIdAndDelete(id);
         return user;
     } catch (error) {
         console.error('Error deleting user:', error);
@@ -52,6 +60,7 @@ const deleteUser = async (req, res) => {
 module.exports = {
     getUser,
     getAllUsers,
+    createUser,  // Export the new function
     updateUser,
     deleteUser
 };
