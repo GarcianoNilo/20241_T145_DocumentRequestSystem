@@ -26,6 +26,7 @@ app.use(cors({ origin: 'http://localhost:3001', credentials: true }));
 app.use(express.json());
 
 // Google Login
+// Google Login
 app.post('/login/google', async (req, res) => {
     const { token } = req.body;
 
@@ -46,12 +47,14 @@ app.post('/login/google', async (req, res) => {
                 name: payload.name,
                 email: payload.email,
                 picture: payload.picture, // Optional: You can store the user's profile picture
-                role: 'user',  // Default role, you can modify as needed (e.g., based on email domain)
+                role: 'user',  // Default role, you can modify as needed
             });
 
             // Save the new user to the database
             await user.save();
             console.log("New user registered:", user);
+        } else {
+            console.log("User found:", user);
         }
 
         // Generate a JWT token with a 1-hour expiration time
