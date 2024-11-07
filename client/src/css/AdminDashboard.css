@@ -1,69 +1,87 @@
-.dashboard {
+/* Base container styles */
+.app-container {
   display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  position: relative;
 }
 
-.content {
-  padding: 2rem;
-  flex-grow: 1;
-  background-color: #f4f6fa;
-
-  background-color: #f6fff1;
+/* Sidebar styling */
+.sidebar {
+  background-color: #f5f8ed;
+  width: 250px;
+  padding: 20px;
+  height: 100vh;
+  position: fixed;
+  left: -250px; /* Hide sidebar by default */
+  transition: left 0.3s ease; /* Smooth slide-in and slide-out */
+  z-index: 1000;
 }
 
-.content h1 {
-  font-size: 2rem;
+.sidebar.open {
+  left: 0; /* Show sidebar when open */
 }
 
-.view-requests {
-  background-color: #1e90ff;
-  color: white;
-  padding: 0.5rem 1rem;
-  margin: 1rem 0;
-  border: none;
-  cursor: pointer;
-}
-
-.cards {
-  display: flex;
-  gap: 1rem;
-  margin-top: 2rem;
-}
-
-.card {
-  background-color: white;
-  padding: 1rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+/* Main content area */
+.main-content {
   flex: 1;
-  border-radius: 8px;
+  margin-left: 20px;
+  transition: margin-left 0.3s ease;
+}
+.table-content {
+  transition: margin-left 0.3s ease; /* Smooth transition */
+  margin-left: 50px;
+  margin-top: 30px;
+  flex-grow: 1;
+}
+.main-content.shifted {
+  margin-left: 290px; /* Shift to the right when sidebar is open */
+}
+.table-content.shifted {
+  margin-left: 290px; /* Shift to the right when sidebar is open */
 }
 
-.card h2 {
-  font-size: 1.2rem;
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .app-container {
+      flex-direction: column;
+  }
+
+  .sidebar {
+      width: 100%;
+      height: auto;
+      left: -100%; /* Hide sidebar off-screen */
+  }
+
+  .sidebar.open {
+      left: 0; /* Slide in full-width on mobile */
+  }
+
+  .main-content {
+      padding: 15px;
+      margin-left: 0; /* Reset margin on mobile */
+  }
+
+  .main-content.shifted {
+      margin-left: 0; /* No shift on mobile */
+  }
 }
 
-.edit {
-  margin-top: 1rem;
-  background-color: #ffd700;
-  border-radius: 10px;
-  padding: 0.5rem;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-  cursor: pointer;
-  border: none;
-  margin-left: 420px;
+/* Medium to larger screens adjustments */
+@media (min-width: 768px) {
+  .main-content {
+      padding: 20px 40px;
+  }
 }
-.publish {
-  margin-top: 1rem;
-  background-color: #1e90ff;
-  border-radius: 10px;
-  padding: 0.5rem;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-  cursor: pointer;
+
+/* Hamburger icon styling */
+.hamburger-icon {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1100;
+  background: transparent;
   border: none;
-  margin-left: 0.3rem;
-}
-.h2_title {
-  background-color: #ffd52c;
-  border: 2px solid black;
+  color: #000;
+  font-size: 24px;
 }

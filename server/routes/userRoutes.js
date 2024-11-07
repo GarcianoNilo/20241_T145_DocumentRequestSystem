@@ -44,6 +44,8 @@ router.post('/', isAdmin, async (req, res) => {
     }
 });
 
+router.post('/register', createUser); // Endpoint to register a user
+
 // Update user details by ID
 router.put('/:id', async (req, res) => {
     try {

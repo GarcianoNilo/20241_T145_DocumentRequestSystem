@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import UDashContent from './components/UDashContent.jsx';
+import UDRContent from './components/UDRContent.jsx';
 import './css/UserDashboard.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Sidebar from './components/Sidebar.jsx';
@@ -23,7 +23,7 @@ function UserDashboard() {
       <Sidebar isOpen={isSidebarOpen} />
 
       {/* Main Content */}
-      <UDashContent isSidebarOpen={isSidebarOpen} />
+      <UDRContent isSidebarOpen={isSidebarOpen} />
 
       {/* StepsPanel */}
       <StepsPanel />

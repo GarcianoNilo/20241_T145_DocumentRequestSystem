@@ -14,14 +14,3 @@ p {
     font-family: "Montserrat", sans-serif;
     font-weight: bold;
 }
-
-.steps-panel {
-    padding: 30px;
-  }
-  
-  .step-card {
-    border-radius: 10px;
-    margin-top: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  

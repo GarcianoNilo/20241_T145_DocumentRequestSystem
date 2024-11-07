@@ -6,6 +6,8 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import Oauth from './components/Oauth';
 import UserDashboard from './UserDashboard';
 import AdminDashboard from './AdminDashboard';
+import UserDocuments from './UserDocuments';
+import DocumentRequest from './DocumentRequest';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -30,10 +32,18 @@ function App() {
         } 
         />
         <Route 
-        path="/document-request" 
+        path="/documents" 
         element={
           <ProtectedRoute>
-            <UserDashboard />
+            <UserDocuments />
+          </ProtectedRoute>
+        } 
+        />
+        <Route 
+        path="/request" 
+        element={
+          <ProtectedRoute>
+            <DocumentRequest />
           </ProtectedRoute>
         } 
         />
