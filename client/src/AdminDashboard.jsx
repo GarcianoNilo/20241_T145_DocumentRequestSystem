@@ -11,6 +11,7 @@ function AdminDashboard() {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+
   return (
     <div className="app-container d-flex">
       {/* Hamburger Icon */}

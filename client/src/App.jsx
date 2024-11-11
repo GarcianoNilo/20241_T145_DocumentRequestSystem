@@ -9,6 +9,7 @@ import AdminDashboard from './AdminDashboard';
 import UserDocuments from './UserDocuments';
 import DocumentRequest from './DocumentRequest';
 import ProtectedRoute from './components/ProtectedRoute';
+import DisplayUser from './DsiplayUsers';
 
 function App() {
   return (
@@ -16,37 +17,45 @@ function App() {
       <Route path="/" element={<Navigate to="/login" />} />
       <Route path="/login" element={<Oauth />} />
       <Route
-        path="/dashboard"
+        path="/user"
         element={
           <ProtectedRoute>
             <UserDashboard />
           </ProtectedRoute>
         }
       />
-      <Route 
-        path="/admin" 
+      <Route
+        path="/admin"
         element={
           <ProtectedRoute>
             <AdminDashboard />
           </ProtectedRoute>
-        } 
-        />
-        <Route 
-        path="/documents" 
+        }
+      />
+      <Route
+        path="/documents"
         element={
           <ProtectedRoute>
             <UserDocuments />
           </ProtectedRoute>
-        } 
-        />
-        <Route 
-        path="/request" 
+        }
+      />
+      <Route
+        path="/request"
         element={
           <ProtectedRoute>
             <DocumentRequest />
           </ProtectedRoute>
-        } 
-        />
+        }
+      />
+      <Route
+        path="/displayUsers"
+        element={
+          <ProtectedRoute>
+            <DisplayUser />
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
 }

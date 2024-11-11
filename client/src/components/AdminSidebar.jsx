@@ -7,6 +7,7 @@ export default function AdminSidebar({ isOpen }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    sessionStorage.removeItem('sessionToken');
     navigate('/login');
   };
 
@@ -34,6 +35,9 @@ export default function AdminSidebar({ isOpen }) {
         </MDBBtn>
         <MDBBtn href="/account" className="mb-4 custom-btn">
           <MDBIcon fas icon="user-cog" className="me-3" /> Account
+        </MDBBtn>
+        <MDBBtn href="/displayUsers" className="mb-4 custom-btn">
+          <MDBIcon fas icon="user-cog" className="me-3" /> Users
         </MDBBtn>
       </MDBListGroup>
 

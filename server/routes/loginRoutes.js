@@ -1,4 +1,3 @@
-// WORKING
 const express = require('express');
 const { loginUser } = require('../services/loginService');
 

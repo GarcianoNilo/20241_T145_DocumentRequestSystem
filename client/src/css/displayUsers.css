@@ -1,0 +1,149 @@
+/* Table Container */
+.user-table-container {
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+/* Table Styling */
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Arial', sans-serif;
+    background-color: #fff;
+}
+
+/* Header Row - Make header text bigger and bold */
+.user-table th {
+    background-color: #f2f2f2;
+    color: #333;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 20px;
+    /* Increased font size */
+    padding: 18px 20px;
+    /* Increased padding */
+}
+
+/* Table Cells */
+.user-table th,
+.user-table td {
+    border: 1px solid #ddd;
+    padding: 18px 20px;
+    /* More padding for better readability */
+    text-align: center;
+    font-size: 18px;
+    /* Increased font size for better readability */
+}
+
+/* Table Rows */
+.user-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.user-table tr:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+
+/* Hover Effect for Table Cells */
+.user-table td:hover {
+    background-color: #f1f1f1;
+}
+
+/* Buttons */
+.button {
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    /* Smaller button padding */
+    text-align: center;
+    font-size: 14px;
+    /* Smaller font size */
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Add User Button (Blue) */
+.button.add-user {
+    background-color: #007bff;
+}
+
+.button.add-user:hover {
+    background-color: #0056b3;
+}
+
+/* Edit Button (Blue) */
+.button.edit-user {
+    background-color: #007bff;
+}
+
+.button.edit-user:hover {
+    background-color: #0056b3;
+}
+
+/* Confirm Button (Green) */
+.button.confirm-user {
+    background-color: #05e60c;
+}
+
+.button.confirm-user:hover {
+    background-color: #00c40a;
+}
+
+/* Cancel Button (Red) */
+.button.cancel-user {
+    background-color: #dc3545;
+}
+
+.button.cancel-user:hover {
+    background-color: #c82333;
+}
+
+/* Delete Button (Red) */
+.button.delete-user {
+    background-color: #dc3545;
+}
+
+.button.delete-user:hover {
+    background-color: #c82333;
+}
+
+/* Button Focus Effect */
+.button:focus {
+    outline: none;
+    box-shadow: 0 0 5px #007bff;
+}
+
+/* Button Disabled State */
+.button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+}
+
+/* Responsive Design for Small Screens */
+@media (max-width: 768px) {
+    .user-table-container {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .user-table th,
+    .user-table td {
+        font-size: 16px;
+        /* Larger font size for better readability on small screens */
+        padding: 12px 15px;
+        /* Slightly more padding on mobile */
+    }
+
+    .button {
+        padding: 8px 15px;
+        /* Smaller padding on mobile */
+        font-size: 14px;
+        /* Keep button text small on mobile */
+    }
+}

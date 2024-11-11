@@ -7,6 +7,7 @@ export default function Sidebar({ isOpen }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    sessionStorage.removeItem('sessionToken');
     navigate('/login');
   };
 

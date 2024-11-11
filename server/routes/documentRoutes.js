@@ -1,11 +1,11 @@
-// routes/documentRoutes.js
 const express = require('express');
 const {
     getDocuments,
-    getDocumentById,
-    createDocument,
+    requestDocument,
+    searchDocumentsByTitle,
+    searchDocumentsByDocID,
+    deleteDocument,
     updateDocument,
-    deleteDocument
 } = require('../services/documentService');
 
 const router = express.Router();
@@ -13,16 +13,19 @@ const router = express.Router();
 // Get all documents
 router.get('/', getDocuments);
 
-// Get a single document by ID
-router.get('/:id', getDocumentById);
+// Request (create) a new document (manual docID)
+router.post('/request', requestDocument);
 
-// Create a new document
-router.post('/', createDocument);
+// Search documents by title
+router.post('/search/title', searchDocumentsByTitle);
 
-// Update a document by ID
-router.patch('/:id', updateDocument);
+// Search document by docID (GET method with docID in the URL)
+router.get('/search/:docID', searchDocumentsByDocID);  // Change POST to GET
 
-// Delete a document by ID
-router.delete('/:id', deleteDocument);
+// Delete a document by docID
+router.delete('/:docID', deleteDocument);
+
+// Update a document by docID
+router.patch('/:docID', updateDocument);
 
 module.exports = router;

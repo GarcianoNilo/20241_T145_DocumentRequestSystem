@@ -1,26 +1,22 @@
-// src/components/ProtectedRoute.jsx
-
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 function ProtectedRoute({ children }) {
-    const isAuthenticated = localStorage.getItem('authToken'); // Check if user is logged in
-    const userInfo = JSON.parse(localStorage.getItem('userInfo')); // Get user info from localStorage
+    const isAuthenticated = sessionStorage.getItem('sessionToken'); // Check if user is logged in
+    const userInfo = JSON.parse(sessionStorage.getItem('userInfo')); // Get user info
 
-    // Check if user is authenticated and has a role
     if (!isAuthenticated || !userInfo) {
-        return <Navigate to="/login" />;
+        return <Navigate to="/login" />;  // Redirect to login if unauthenticated
     }
 
-    // Redirect based on role
+    // Check the user role and render the correct dashboard component
     if (userInfo.role === 'admin') {
-        return children; // Allow access to the admin component
+        return children;  // Admin is allowed to access
     } else if (userInfo.role === 'user') {
-        return children; // Allow access to the user component
+        return children;  // User is allowed to access
     }
 
-    // Reject login if no valid role
-    return <Navigate to="/login" />;
+    return <Navigate to="/login" />; // Redirect to login for any other cases
 }
 
 export default ProtectedRoute;

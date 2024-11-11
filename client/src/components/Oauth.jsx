@@ -36,13 +36,13 @@ export default function Oauth() {
             console.log("Backend response:", data);
 
             if (response.ok) {
-                localStorage.setItem('authToken', credentialResponse.credential);
-                localStorage.setItem('userInfo', JSON.stringify(data.user));
-
+                sessionStorage.setItem('authToken', credentialResponse.credential);
+                sessionStorage.setItem('userInfo', JSON.stringify(data.user));
+                sessionStorage.setItem('sessionToken', data.token);
                 if (data.user.role === 'admin') {
                     navigate('/admin');
                 } else if (data.user.role === 'user') {
-                    navigate('/dashboard');
+                    navigate('/user');
                 }
             } else {
                 console.log("Login Failed:", data.message);
@@ -86,12 +86,12 @@ export default function Oauth() {
                                 <p className="text-center login-txt2">Effortlessly Request Documents Online</p>
 
                                 <div className="login mb-3 mt-3">
-                                {/* Google Login */}
-                                <GoogleLogin
-                                    onSuccess={onSuccess}
-                                    onError={onError}
-                                    disabled={!isRecaptchaValid}
-                                />
+                                    {/* Google Login */}
+                                    <GoogleLogin
+                                        onSuccess={onSuccess}
+                                        onError={onError}
+                                        disabled={!isRecaptchaValid}
+                                    />
                                 </div>
                                 {/* reCAPTCHA */}
                                 <ReCAPTCHA
