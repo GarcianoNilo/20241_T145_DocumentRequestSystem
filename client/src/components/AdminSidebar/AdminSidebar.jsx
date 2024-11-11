@@ -1,28 +1,35 @@
-import React from 'react';
-import { MDBListGroup, MDBBadge, MDBBtn, MDBIcon } from 'mdb-react-ui-kit';
-import { useNavigate } from 'react-router-dom';
-import './components-css/AdminSidebar.css';
+import React from "react";
+import { MDBListGroup, MDBBadge, MDBBtn, MDBIcon } from "mdb-react-ui-kit";
+import { useNavigate } from "react-router-dom";
+import "./../components-css/AdminSidebar.css";
 
 export default function AdminSidebar({ isOpen }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    sessionStorage.removeItem('sessionToken');
-    navigate('/login');
+    sessionStorage.removeItem("sessionToken");
+    navigate("/login");
   };
 
   return (
-    <div className={`sidebar ${isOpen ? 'open' : ''}`}>
+    <div className={`sidebar ${isOpen ? "open" : ""}`}>
       {/* Logo */}
       <div className="d-flex justify-content-center">
-        <img src="./src/assets/userlogo.svg" alt="Logo" className="img-fluid" style={{ width: '150px' }} />
+        <img
+          src="./src/assets/userlogo.svg"
+          alt="Logo"
+          className="img-fluid"
+          style={{ width: "150px" }}
+        />
       </div>
 
       {/* User Info */}
       <div className="text-center mb-4">
         <MDBIcon icon="user-circle" size="3x" />
         <h5>Administrator</h5>
-        <MDBBadge color="danger" className="text-white">Admin</MDBBadge>
+        <MDBBadge color="danger" className="text-white">
+          Admin
+        </MDBBadge>
       </div>
 
       {/* Navigation Links */}

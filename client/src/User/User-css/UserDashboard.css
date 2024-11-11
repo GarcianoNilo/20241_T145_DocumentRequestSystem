@@ -1,0 +1,109 @@
+/* Base container styles */
+.app-container {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Sidebar styling */
+.sidebar {
+  background-color: #f5f8ed;
+  width: 250px;
+  padding: 20px;
+  height: 100vh;
+  position: fixed;
+  left: -250px;
+  transition: left 0.3s ease;
+  z-index: 1000;
+}
+
+.sidebar.open {
+  left: 0; /* Show sidebar when open */
+}
+
+/* Main content area */
+.main-content {
+  flex: 1;
+  margin-left: 20px;
+  transition: margin-left 0.3s ease;
+}
+.table-content {
+  transition: margin-left 0.3s ease; /* Smooth transition */
+  margin-left: 50px;
+  margin-top: 30px;
+  flex-grow: 1;
+}
+.dr-content {
+  transition: margin-left 0.3s ease; /* Smooth transition */
+  margin-left: 50px;
+  margin-top: 30px;
+  flex-grow: 1;
+}
+.main-content.shifted {
+  margin-left: 290px; /* Shift to the right when sidebar is open */
+}
+.table-content.shifted {
+  margin-left: 290px; /* Shift to the right when sidebar is open */
+}
+dr-content.shifted {
+  margin-left: 290px; /* Shift to the right when sidebar is open */
+}
+/* StepsPanel styling */
+.steps-panel {
+  background-color: #1539cd;
+  color: white;
+  width: 300px;
+  padding: 20px;
+  transition: margin-left 0.3s ease; /* Smooth shift */
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    left: -100%; /* Hide sidebar off-screen */
+  }
+
+  .sidebar.open {
+    left: 0; /* Slide in full-width on mobile */
+  }
+
+  .main-content {
+    padding: 15px;
+    margin-left: 0; /* Reset margin on mobile */
+  }
+
+  .main-content.shifted {
+    margin-left: 0; /* No shift on mobile */
+  }
+
+  .steps-panel {
+    width: 100%;
+    margin-top: 20px;
+  }
+}
+
+/* Medium to larger screens adjustments */
+@media (min-width: 768px) {
+  .main-content {
+    padding: 20px 40px;
+  }
+}
+
+/* Hamburger icon styling */
+.hamburger-icon {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1100;
+  background: transparent;
+  border: none;
+  color: #000;
+  font-size: 24px;
+}

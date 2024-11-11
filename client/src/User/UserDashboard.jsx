@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import UDRContent from './components/UDRContent.jsx';
-import './css/UserDashboard.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Sidebar from './components/Sidebar.jsx';
-import StepsPanel from './components/StepsPanel.jsx';
+import React, { useState } from "react";
+import UDashContent from "../components/UserContent/UDashContent.jsx";
+import "./User-css/UserDashboard.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Sidebar from "../components/UserSidebar/Sidebar.jsx";
+import StepsPanel from "../components/UserContent/StepsPanel.jsx";
 
 function UserDashboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -23,7 +23,7 @@ function UserDashboard() {
       <Sidebar isOpen={isSidebarOpen} />
 
       {/* Main Content */}
-      <UDRContent isSidebarOpen={isSidebarOpen} />
+      <UDashContent isSidebarOpen={isSidebarOpen} />
 
       {/* StepsPanel */}
       <StepsPanel />

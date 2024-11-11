@@ -1,8 +1,8 @@
 // src/Dashboard.jsx
 import React, { useState } from "react"; // Added useState import
-import AdminSidebar from "./components/AdminSidebar.jsx";
-import ADashContent from "./components/ADashContent.jsx";
-import "./css/AdminDashboard.css";
+import AdminSidebar from "../components/AdminSidebar/AdminSidebar.jsx";
+import ADashContent from "../components/AdminContent/ADashContent.jsx";
+import "./Admin-css/AdminDashboard.css";
 
 function AdminDashboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -10,7 +10,6 @@ function AdminDashboard() {
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
-
 
   return (
     <div className="app-container d-flex">

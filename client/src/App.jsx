@@ -1,15 +1,14 @@
-
-import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import 'mdb-react-ui-kit/dist/css/mdb.min.css';
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import "mdb-react-ui-kit/dist/css/mdb.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import Oauth from './components/Oauth';
-import UserDashboard from './UserDashboard';
-import AdminDashboard from './AdminDashboard';
-import UserDocuments from './UserDocuments';
-import DocumentRequest from './DocumentRequest';
-import ProtectedRoute from './components/ProtectedRoute';
-import DisplayUser from './DsiplayUsers';
+import Oauth from "./components/Oauth";
+import UserDashboard from "./User/UserDashboard";
+import AdminDashboard from "./Admin/AdminDashboard";
+import UserDocuments from "./User/UserDocuments";
+import DocumentRequest from "./Admin/DocumentRequest";
+import ProtectedRoute from "./components/ProtectedRoute";
+import DisplayUser from "./Admin/DisplayUsers";
 
 function App() {
   return (
