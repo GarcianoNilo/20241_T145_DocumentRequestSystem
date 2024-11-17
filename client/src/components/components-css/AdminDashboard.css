@@ -1,0 +1,619 @@
+/* Reset default margins and ensure full coverage */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body,
+html {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+/* Add these new styles at the top */
+.admin-layout {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+/* Main container */
+.admin-container {
+  flex: 1;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f5f7fa;
+  transition: margin-left 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.admin-container.with-sidebar {
+  margin-left: 250px; /* Width of expanded sidebar */
+}
+
+.admin-container.without-sidebar {
+  margin-left: 60px; /* Width of collapsed sidebar */
+}
+
+.custom-btn {
+  color: white;
+  background-color: #4a90e2;
+}
+
+.custom-btn1 {
+  color: white;
+  background-color: #e74c3c;
+}
+
+.custom-btn2 {
+  color: white;
+  background-color: #f39c12;
+}
+
+/* Add sidebar styles */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  background-color: #333;
+  color: white;
+  transition: width 0.3s ease;
+  z-index: 1000;
+}
+
+.sidebar.expanded {
+  width: 250px;
+}
+
+.sidebar.collapsed {
+  width: 60px;
+}
+
+.toggle-icon {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  cursor: pointer;
+  color: white;
+}
+/* Header section */
+.admin-header {
+  padding: 20px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.admin-header h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: black;
+}
+
+.admin-header p {
+  color: black;
+}
+
+/* Controls section */
+.admin-controls {
+  padding: 20px;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.search-input {
+  flex: 1;
+  max-width: 400px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: white;
+  color: black;
+}
+
+/* Table container */
+.table-container {
+  flex: 1;
+  overflow-y: auto;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 0 20px;
+}
+
+/* DataTable customization */
+.rdt_Table {
+  width: 100%;
+  max-width: 100%;
+  background: #ffffff !important;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  table-layout: fixed;
+  color: black !important;
+}
+
+.rdt_TableHead {
+  background-color: #2c3e50 !important;
+  color: white !important;
+}
+
+.rdt_TableHeadRow {
+  background-color: #2c3e50 !important;
+  color: white !important;
+  font-weight: bold !important;
+}
+
+.rdt_TableCell {
+  word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background-color: transparent !important;
+  padding: 12px 15px !important;
+  color: #2c3e50 !important;
+}
+
+.rdt_TableRow {
+  background-color: #ffffff !important;
+}
+
+.rdt_TableRow:nth-child(even) {
+  background-color: #f8fafc !important;
+}
+
+.rdt_TableFooter {
+  background-color: #2c3e50 !important;
+  color: white !important;
+}
+
+.rdt_Pagination {
+  background-color: #2c3e50 !important;
+  color: white !important;
+  padding: 10px !important;
+}
+
+.rdt_Pagination select {
+  background-color: #ffffff !important;
+  color: #2c3e50 !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+.rdt_Pagination button {
+  color: white !important;
+}
+
+.rdt_Pagination button:hover {
+  background-color: #357abd !important;
+}
+
+.rdt_TableFilter {
+  background-color: #ffffff !important;
+  padding: 8px !important;
+}
+
+.rdt_TableFilter input {
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 4px !important;
+  padding: 6px 12px !important;
+}
+
+/* Button styles */
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: black;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Modal styles */
+.modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 25px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 6px rgb(255, 255, 255);
+  color: white;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.modal-form input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+/* Action buttons in table */
+.rdt_TableCell button {
+  padding: 6px 12px;
+  margin: 0 5px;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .admin-container.with-sidebar {
+    margin-left: 0;
+  }
+
+  .admin-container.without-sidebar {
+    margin-left: 0;
+  }
+
+  .sidebar {
+    position: fixed;
+    transform: translateX(-100%);
+  }
+
+  .sidebar.expanded {
+    transform: translateX(0);
+  }
+
+  .toggle-icon {
+    right: 20px;
+    left: auto;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .admin-header {
+    padding: 15px;
+  }
+
+  .admin-controls {
+    padding: 15px;
+  }
+
+
+  button {
+    width: 100%;
+  }
+
+  .rdt_TableCell button {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+}
+
+/* Ensure modal overlay covers full screen */
+.ReactModal__Overlay {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  z-index: 1000;
+}
+.logout {
+  margin-left: auto;
+}
+
+.delete-confirm-toast {
+  padding: 10px;
+  text-align: center;
+}
+
+.delete-confirm-toast p {
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.delete-confirm-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.delete-confirm-buttons button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.delete-confirm-buttons button:hover {
+  opacity: 0.9;
+}
+
+/* Optional: Add these styles if you want to customize the toast container */
+.Toastify__toast-container {
+  width: auto;
+  max-width: 400px;
+}
+
+.Toastify__toast {
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.hamburger-icon {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1001;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  background-color: rgba(54, 69, 79, 0.65);
+  border-radius: 5px;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.hamburger-icon:hover {
+  background-color: rgba(54, 69, 79, 0.8);
+}
+
+/* Custom scrollbar styles */
+.table-container::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.table-container::-webkit-scrollbar-track {
+  background: rgba(54, 69, 79, 0.1);
+  border-radius: 10px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: rgba(54, 69, 79, 0.65);
+  border-radius: 10px;
+  transition: background 0.2s ease;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(54, 69, 79, 0.8);
+}
+
+/* For Firefox */
+.table-container {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(54, 69, 79, 0.65) rgba(54, 69, 79, 0.1);
+}
+
+/* DataTable text color overrides */
+.rdt_Table {
+  color: black !important;
+}
+
+
+.rdt_TableHeadRow {
+  color: black !important;
+  font-weight: bold !important;
+}
+
+.rdt_TableRow {
+  color: black !important;
+}
+
+.rdt_TableCell {
+  color: black !important;
+}
+
+.rdt_Pagination {
+  color: black !important;
+}
+
+/* If you're using the search/filter feature */
+.rdt_TableFilter {
+  color: black !important;
+}
+
+/* For any select dropdowns in the table */
+.rdt_TableSelect {
+  color: black !important;
+}
+
+
+.rdt_TableRow {
+  color: black !important;
+}
+
+.rdt_TableCell {
+  word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 12px 15px !important;
+  color: black !important;
+}
+
+/* Style for the dropdown itself */
+select.rdt_TableSelect,
+.rdt_Pagination select {
+  color: black !important;
+  background-color: white !important;
+}
+
+/* Style for the dropdown options */
+select.rdt_TableSelect option,
+.rdt_Pagination select option {
+  color: black !important;
+}
+
+/* Additional styles for better visibility */
+.rdt_Pagination {
+  color: black !important;
+}
+
+.rdt_Pagination select {
+  color: black !important;
+
+}
+
+/* Ensure dropdown text is visible in all states */
+.rdt_Pagination select:hover,
+.rdt_Pagination select:focus {
+  color: black !important;
+
+}
+
+/* Custom button styles */
+.custom-btn {
+  background-color: #4a90e2;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.custom-btn:hover {
+  background-color: #357abd;
+}
+
+.custom-btn1 {
+  background-color: #e74c3c;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.custom-btn1:hover {
+  background-color: #c0392b;
+}
+
+.custom-btn2 {
+  background-color: #f39c12;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.custom-btn2:hover {
+  background-color: #d68910;
+}
+
+/* SweetAlert2 custom styles */
+.swal2-popup {
+  font-size: 1rem !important;
+  border-radius: 10px !important;
+}
+
+.swal2-title {
+  font-size: 1.4rem !important;
+  color: #333 !important;
+}
+
+.swal2-html-container {
+  font-size: 1rem !important;
+}
+
+.swal2-confirm {
+  background-color: #4a90e2 !important;
+}
+
+.swal2-cancel {
+  background-color: #e74c3c !important;
+}
+
+/* Animation classes */
+.animated {
+  animation-duration: 0.3s;
+  animation-fill-mode: both;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -20px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.fadeInDown {
+  animation-name: fadeInDown;
+}
+
+/* Loading animation styles */
+.swal2-loading {
+  overflow: hidden;
+}
+
+.swal2-loader {
+  border-color: #4a90e2 transparent #4a90e2 transparent;
+}
+
+/* Admin Dashboard Table Styles */
+.admin-container .table-container {
+  margin: 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  height: calc(100vh - 300px);
+  overflow: hidden;
+}
+
+.admin-container .rdt_Table {
+  height: 100%;
+}
+
+.admin-container .rdt_TableHead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: white;
+}
+
+.admin-container .rdt_TableBody {
+  height: calc(100% - 100px) !important;
+  overflow-y: auto !important;
+  padding-right: 3px;
+}
+
+/* Admin Table Scrollbar */
+.admin-container .rdt_TableBody::-webkit-scrollbar {
+  width: 10px;
+  background-color: transparent;
+}
+
+.admin-container .rdt_TableBody::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.02);
+  border-radius: 8px;
+  margin: 8px 0;
+}
+
+.admin-container .rdt_TableBody::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, rgba(254, 186, 173, 0.8), rgba(255, 164, 148, 0.9));
+  border-radius: 8px;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  transition: all 0.3s ease;
+}
+
+.admin-container .rdt_TableBody::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, rgba(255, 164, 148, 0.9), rgba(255, 140, 124, 1));
+  border: 2px solid transparent;
+}

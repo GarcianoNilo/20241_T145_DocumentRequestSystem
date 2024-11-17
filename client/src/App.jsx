@@ -1,57 +1,84 @@
+// src/App.jsx
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import "mdb-react-ui-kit/dist/css/mdb.min.css";
-import "@fortawesome/fontawesome-free/css/all.min.css";
-import Oauth from "./components/Oauth";
-import UserDashboard from "./User/UserDashboard";
-import AdminDashboard from "./Admin/AdminDashboard";
-import UserDocuments from "./User/UserDocuments";
-import DocumentRequest from "./Admin/DocumentRequest";
+import Login from "./components/Login";
+import AdminDashboard from "./components/AdminDashboard";
+import UserDashboard from "./components/UserDashboard";
+import UserDocuments from "./components/User/UserDocuments";
+import RequestHistory from "./components/User/RequestHistory";
 import ProtectedRoute from "./components/ProtectedRoute";
-import DisplayUser from "./Admin/DisplayUsers";
+import Notifications from "./components/User/Notifications";
+import RequestsDocument from "./components/Admin/RequestsDocument";
+import Account from "./components/Admin/Account";
+import Users from "./components/Admin/Users";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/login" />} />
-      <Route path="/login" element={<Oauth />} />
-      <Route
-        path="/user"
-        element={
-          <ProtectedRoute>
-            <UserDashboard />
-          </ProtectedRoute>
-        }
-      />
+      <Route path="/login" element={<Login />} />
       <Route
         path="/admin"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute role="admin">
             <AdminDashboard />
           </ProtectedRoute>
         }
       />
       <Route
-        path="/documents"
+        path="/requests-document"
         element={
-          <ProtectedRoute>
-            <UserDocuments />
+          <ProtectedRoute role="admin">
+            <RequestsDocument />
           </ProtectedRoute>
         }
       />
       <Route
-        path="/request"
+        path="/account"
         element={
-          <ProtectedRoute>
-            <DocumentRequest />
+          <ProtectedRoute role="admin">
+            <Account />
           </ProtectedRoute>
         }
       />
       <Route
         path="/displayUsers"
         element={
-          <ProtectedRoute>
-            <DisplayUser />
+          <ProtectedRoute role="admin">
+            <Users />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/user"
+        element={
+          <ProtectedRoute role="user">
+            <UserDashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/documents"
+        element={
+          <ProtectedRoute role="user">
+            <UserDocuments />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/request-history"
+        element={
+          <ProtectedRoute role="user">
+            <RequestHistory />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/notifications"
+        element={
+          <ProtectedRoute role="user">
+            <Notifications />
           </ProtectedRoute>
         }
       />
