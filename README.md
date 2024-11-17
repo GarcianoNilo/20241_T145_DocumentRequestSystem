@@ -12,7 +12,6 @@ This system aims to make it easier for departments and faculties as well as the 
 # Group Member:
 Culibar, James Cyrel M. <br>
 Garciano, Nilo Jr. G. <br>
-Maternal, Daisy Joy <br>
 Raterta, Noel <br>
 Yosores, Joshua James G.
  
