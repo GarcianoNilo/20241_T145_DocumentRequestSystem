@@ -1,0 +1,119 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Reset default styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Set base font styles */
+body {
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Heading styles */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+}
+
+/* Specific text styles */
+.dashboard-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+/* Form elements */
+input, select, textarea, button {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Navigation and sidebar */
+.sidebar-menu {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+}
+
+/* Table text */
+.rdt_Table {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Modal content */
+.modal-content {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Footer text */
+.footer {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Status badges */
+.status-badge {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
