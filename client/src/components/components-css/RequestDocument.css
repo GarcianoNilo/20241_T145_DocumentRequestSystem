@@ -30,12 +30,19 @@
   background: white;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+<<<<<<< HEAD
   height: calc(100vh - 120px);
   overflow: hidden;
+=======
+  height: calc(100vh - 180px);
+  overflow: auto;
+  overflow-x: auto;
+>>>>>>> main
 }
 
 /* Table styling */
 .rdt_Table {
+<<<<<<< HEAD
     font-size: 0.85rem !important;
 }
 
@@ -56,10 +63,37 @@
 
 .rdt_TableCell {
     padding: 5px 20px !important;
+=======
+  font-size: 0.85rem !important;
+  overflow: visible !important;
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.rdt_TableHeader {
+  font-size: 0.9rem !important;
+  padding: 10px !important;
+}
+
+.rdt_TableHeadRow {
+  font-size: 0.85rem !important;
+  min-height: 40px !important;
+}
+
+.rdt_TableRow {
+  min-height: 40px !important;
+  padding: 4px 0 !important;
+}
+
+.rdt_TableCell {
+  padding: 5px 20px !important;
+>>>>>>> main
 }
 
 /* Button styling */
 .action-buttons {
+<<<<<<< HEAD
     display: flex;
     gap: 4px;
 }
@@ -77,25 +111,63 @@
 .action-buttons button svg {
     width: 16px;
     height: 16px;
+=======
+  display: flex;
+  gap: 4px;
+}
+
+.action-buttons button {
+  padding: 5px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+}
+
+.action-buttons button svg {
+  width: 16px;
+  height: 16px;
+>>>>>>> main
 }
 
 /* Pagination styling */
 .rdt_Pagination {
+<<<<<<< HEAD
     font-size: 0.8rem !important;
     min-height: 40px !important;
+=======
+  font-size: 0.8rem !important;
+  min-height: 40px !important;
+>>>>>>> main
 }
 
 /* Title styling */
 h1 {
+<<<<<<< HEAD
     font-size: 1.5rem;
     margin-bottom: 15px;
+=======
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+>>>>>>> main
 }
 
 /* Make table more compact overall */
 .rdt_TableBody {
+<<<<<<< HEAD
     overflow-y: auto;
     max-height: calc(100vh - 250px);
     /* Adjust based on your needs */
+=======
+  overflow-y: auto;
+  max-height: calc(100vh - 300px);
+  /* Adjust based on your needs */
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+>>>>>>> main
 }
 
 /* Responsive adjustments */
@@ -107,6 +179,7 @@ h1 {
   .rdt_TableCell {
     padding: 5px 10px !important;
   }
+<<<<<<< HEAD
   
   .requests-document-section {
     margin: 0;
@@ -114,3 +187,25 @@ h1 {
     height: calc(100vh - 100px);
   }
 }
+=======
+
+  .requests-document-section {
+    margin: 0;
+    padding: 10px;
+    height: calc(100vh - 160px);
+    overflow: auto;
+  }
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.btn-secondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+>>>>>>> main

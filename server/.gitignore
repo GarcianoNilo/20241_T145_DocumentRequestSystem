@@ -1,3 +1,8 @@
 node_modules
 package-lock.json
+<<<<<<< HEAD
 credentials.json
+=======
+credentials.json
+credentialsAPI.json
+>>>>>>> main
