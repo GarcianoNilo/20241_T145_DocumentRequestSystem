@@ -9,8 +9,14 @@ import RequestHistory from "./components/User/RequestHistory";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Notifications from "./components/User/Notifications";
 import RequestsDocument from "./components/Admin/RequestsDocument";
+<<<<<<< HEAD
 import Account from "./components/Admin/Account";
 import Users from "./components/Admin/Users";
+=======
+import Users from "./components/Admin/Users";
+import ArchiveDocuments from "./components/User/ArchiveDocuments";
+import AdminNotifications from "./components/Admin/AdminNotifications";
+>>>>>>> main
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
@@ -35,6 +41,7 @@ function App() {
         }
       />
       <Route
+<<<<<<< HEAD
         path="/account"
         element={
           <ProtectedRoute role="admin">
@@ -43,6 +50,8 @@ function App() {
         }
       />
       <Route
+=======
+>>>>>>> main
         path="/displayUsers"
         element={
           <ProtectedRoute role="admin">
@@ -51,6 +60,17 @@ function App() {
         }
       />
       <Route
+<<<<<<< HEAD
+=======
+        path="/admin-notifications"
+        element={
+          <ProtectedRoute role="admin">
+            <AdminNotifications />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+>>>>>>> main
         path="/user"
         element={
           <ProtectedRoute role="user">
@@ -67,6 +87,17 @@ function App() {
         }
       />
       <Route
+<<<<<<< HEAD
+=======
+        path="/archive-documents"
+        element={
+          <ProtectedRoute role="user">
+            <ArchiveDocuments />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+>>>>>>> main
         path="/request-history"
         element={
           <ProtectedRoute role="user">

@@ -8,7 +8,11 @@ const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
     picture: String,
     department: String,
+<<<<<<< HEAD
     userID: { type: Number, unique: true, required: true },
+=======
+    userID: { type: String, unique: true, sparse: true }, // Change to String
+>>>>>>> main
     googleId: String, // If you are using Google login, this might be needed
 }, { timestamps: true });
 

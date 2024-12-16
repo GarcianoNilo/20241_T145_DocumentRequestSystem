@@ -7,7 +7,20 @@ const { OAuth2Client } = require("google-auth-library");
 const jwt = require("jsonwebtoken");
 const User = require("./models/User");
 const userRoutes = require("./routes/userRoutes");
+<<<<<<< HEAD
 const documentRoutes = require("./routes/documentRoutes");
+=======
+const adminRoutes = require("./routes/adminRoutes");
+const documentRoutes = require("./routes/documentRoutes");
+const Admin = require("./models/Admin");
+const { lockResource, unlockResource, isResourceLocked } = require('./services/lockService');
+const lockRoutes = require("./routes/lockRoutes");
+const emailService = require('./services/emailService');
+const adminActionRoutes = require('./routes/adminActionRoutes');
+
+
+
+>>>>>>> main
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -60,6 +73,7 @@ app.get(
 app.get(
   "/auth/google/callback",
   passport.authenticate("google", { failureRedirect: "/login" }),
+<<<<<<< HEAD
   (req, res) => {
     // Successful authentication, redirect based on role
     if (req.user.role === "admin") {
@@ -68,6 +82,35 @@ app.get(
       res.redirect("/user");
     } else {
       res.redirect("/login"); // Or handle unknown roles
+=======
+  async (req, res) => {
+    try {
+      // Check if the user is an admin
+      let user = await Admin.findOne({ email: req.user.email });
+      let role = 'admin';
+
+      if (!user) {
+        // If not an admin, check if the user is a regular user
+        user = await User.findOne({ email: req.user.email });
+        role = 'user';
+      }
+
+      if (!user) {
+        return res.redirect("/login"); // Handle unknown roles
+      }
+
+      // Successful authentication, redirect based on role
+      if (role === "admin") {
+        res.redirect("/admin");
+      } else if (role === "user") {
+        res.redirect("/user");
+      } else {
+        res.redirect("/login"); // Or handle unknown roles
+      }
+    } catch (error) {
+      console.error("Error during authentication callback:", error);
+      res.redirect("/login");
+>>>>>>> main
     }
   }
 );
@@ -94,27 +137,49 @@ app.post("/login/google", async (req, res) => {
       audience: process.env.GOOGLE_CLIENT_ID,
     });
     const payload = ticket.getPayload();
+<<<<<<< HEAD
 
     let user = await User.findOne({ email: payload.email });
+=======
+    const picture = payload.picture;
+
+    let user = await Admin.findOne({ email: payload.email });
+    let role = 'admin';
+
+    if (!user) {
+      user = await User.findOne({ email: payload.email });
+      role = 'user';
+    }
+>>>>>>> main
 
     if (!user) {
       return res.status(401).json({ message: "Unauthorized: User not found" });
     }
 
+<<<<<<< HEAD
     // Generate access token (1 hour expiration)
     const sessionToken = jwt.sign(
       { userId: user._id, role: user.role },
+=======
+    // Generate tokens
+    const sessionToken = jwt.sign(
+      { userId: user._id, role: role },
+>>>>>>> main
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
 
+<<<<<<< HEAD
     // Generate refresh token (7 days expiration)
+=======
+>>>>>>> main
     const refreshToken = jwt.sign(
       { userId: user._id },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
 
+<<<<<<< HEAD
     res.json({
       message: "Login successful",
       user: { name: user.name, email: user.email, role: user.role, picture: user.picture },
@@ -124,6 +189,20 @@ app.post("/login/google", async (req, res) => {
     console.log("User found:", user);
   } catch (error) {
     console.error("Error verifying Google token:", error);
+=======
+    // Send login notification email
+    await emailService.sendLoginNotification(user.email, user.name);
+
+    res.json({
+      message: "Login successful",
+      user: { name: user.name, email: user.email, role: role, picture: picture || user.picture },
+      token: sessionToken,
+      refreshToken: refreshToken,
+    });
+
+  } catch (error) {
+    console.error("Error during login:", error);
+>>>>>>> main
     res.status(401).json({ message: "Invalid token" });
   }
 });
@@ -161,7 +240,14 @@ app.post("/refresh-token", async (req, res) => {
 
 // Use the user routes
 app.use("/users", userRoutes);
+<<<<<<< HEAD
 app.use("/documents", documentRoutes);
+=======
+app.use("/admins", adminRoutes);
+app.use("/documents", documentRoutes);
+app.use("/lock", lockRoutes);
+app.use('/admin-actions', adminActionRoutes);
+>>>>>>> main
 
 // Logout route to clear the session
 app.post("/logout", (req, res) => {
@@ -170,6 +256,14 @@ app.post("/logout", (req, res) => {
   });
 });
 
+<<<<<<< HEAD
+=======
+// Serve static files from the 'uploads' directory
+app.use('/uploads', express.static('uploads'));
+
+console.log("Loaded Encryption Key:", process.env.ENCRYPTION_KEY);
+
+>>>>>>> main
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
