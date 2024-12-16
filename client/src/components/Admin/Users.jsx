@@ -182,12 +182,12 @@ function Users() {
         return;
       }
 
+      // Set the lock
       await axios.patch(`http://localhost:3000/lock/edit_user`, {
         isLocked: true,
-        userID: id,
+        userID: id
       });
 
-      // Store the original role when setting up edit
       setEditUser({ ...user, originalRole: user.role });
       setEditingUserId(id);
       setIsEditModalOpen(true);
@@ -309,7 +309,7 @@ function Users() {
       // Release the lock
       await axios.patch(`http://localhost:3000/lock/edit_user`, {
         isLocked: false,
-        userID: null,
+        userID: null
       });
 
       setIsEditModalOpen(false);

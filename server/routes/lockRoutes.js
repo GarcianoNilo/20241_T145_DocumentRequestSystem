@@ -1,72 +1,38 @@
 const express = require('express');
 const router = express.Router();
-
-let editLock = {
-    isLocked: false,
-    userID: null,
-    lockTime: null
-};
-
-let deleteLock = {
-    isLocked: false,
-    userID: null,
-    lockTime: null
-};
-
-const LOCK_TIMEOUT = 3 * 60 * 1000; // 3 minutes in milliseconds
-
-// Function to check and clear expired locks
-const checkLockExpiration = (lock) => {
-    if (lock.isLocked && lock.lockTime) {
-        const currentTime = Date.now();
-        if (currentTime - lock.lockTime > LOCK_TIMEOUT) {
-            // Lock has expired
-            return {
-                isLocked: false,
-                userID: null,
-                lockTime: null
-            };
-        }
-    }
-    return lock;
-};
+const Lock = require('../models/Lock');
 
 // Get edit lock status
-router.get('/edit_user', (req, res) => {
-    editLock = checkLockExpiration(editLock);
-    res.json(editLock);
-});
-
-// Get delete lock status
-router.get('/delete_user', (req, res) => {
-    deleteLock = checkLockExpiration(deleteLock);
-    res.json(deleteLock);
+router.get('/edit_user', async (req, res) => {
+    try {
+        const lock = await Lock.findOne({ button: 'edit_user' });
+        res.json(lock || { isLocked: false, userID: null });
+    } catch (error) {
+        console.error('Error getting lock status:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
 });
 
 // Update edit lock status
-router.patch('/edit_user', (req, res) => {
-    const { isLocked, userID } = req.body;
+router.patch('/edit_user', async (req, res) => {
+    try {
+        const { isLocked, userID } = req.body;
+        
+        const lock = await Lock.findOneAndUpdate(
+            { button: 'edit_user' },
+            { 
+                isLocked,
+                userID,
+                lockTime: isLocked ? Date.now() : null
+            },
+            { new: true, upsert: true }
+        );
 
-    editLock = {
-        isLocked,
-        userID,
-        lockTime: isLocked ? Date.now() : null
-    };
-
-    res.json(editLock);
-});
-
-// Update delete lock status
-router.patch('/delete_user', (req, res) => {
-    const { isLocked, userID } = req.body;
-
-    deleteLock = {
-        isLocked,
-        userID,
-        lockTime: isLocked ? Date.now() : null
-    };
-
-    res.json(deleteLock);
+        res.json(lock);
+    } catch (error) {
+        console.error('Error updating lock status:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
 });
 
 module.exports = router;

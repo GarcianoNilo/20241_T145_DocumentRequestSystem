@@ -18,6 +18,10 @@ const lockSchema = new mongoose.Schema({
         type: String,
         default: null,
     },
+    lockTime: {
+        type: Date,
+        default: null
+    }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Lock', lockSchema);
