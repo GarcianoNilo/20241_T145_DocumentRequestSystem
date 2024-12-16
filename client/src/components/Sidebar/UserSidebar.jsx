@@ -1,6 +1,6 @@
 // src/components/AdminSidebar.jsx
 import React, { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { Button, Badge, ListGroup } from "react-bootstrap";
 import {
   Speedometer2,
@@ -17,6 +17,7 @@ import "./../components-css/AdminSidebar.css";
 
 function UserSidebar({ isOpen }) {
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Retrieve user information from sessionStorage
   const userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
@@ -100,6 +101,10 @@ function UserSidebar({ isOpen }) {
     });
   };
 
+  const isActive = (path) => {
+    return location.pathname === path;
+  };
+
   return (
     <div className={`sidebar ${isOpen ? "open" : ""}`}>
       {/* Logo */}
@@ -130,13 +135,18 @@ function UserSidebar({ isOpen }) {
 
       {/* Navigation Links */}
       <ListGroup className="sidebar-nav mb-4">
-        <ListGroup.Item as={Link} to="/user" className="sidebar-item" action>
+        <ListGroup.Item 
+          as={Link} 
+          to="/user" 
+          className={`sidebar-item ${isActive('/user') ? 'active' : ''}`} 
+          action
+        >
           <Speedometer2 className="me-3" /> Dashboard
         </ListGroup.Item>
         <ListGroup.Item
           as={Link}
-          to="/documents" // This matches the route in App.jsx
-          className="sidebar-item"
+          to="/documents"
+          className={`sidebar-item ${isActive('/documents') ? 'active' : ''}`}
           action
         >
           <FileEarmark className="me-3" /> Documents
@@ -144,7 +154,7 @@ function UserSidebar({ isOpen }) {
         <ListGroup.Item
           as={Link}
           to="/archive-documents"
-          className="sidebar-item"
+          className={`sidebar-item ${isActive('/archive-documents') ? 'active' : ''}`}
           action
         >
           <Archive className="me-3" /> Archive Documents
@@ -152,7 +162,7 @@ function UserSidebar({ isOpen }) {
         <ListGroup.Item
           as={Link}
           to="/request-history"
-          className="sidebar-item"
+          className={`sidebar-item ${isActive('/request-history') ? 'active' : ''}`}
           action
         >
           <ClockHistory className="me-3" /> Request History
@@ -160,11 +170,10 @@ function UserSidebar({ isOpen }) {
         <ListGroup.Item
           as={Link}
           to="/notifications"
-          className="sidebar-item position-relative"
+          className={`sidebar-item position-relative ${isActive('/notifications') ? 'active' : ''}`}
           action
         >
-          <Bell className="me-3" />
-          Notifications
+          <Bell className="me-3" /> Notifications
           {notificationCount > 0 && (
             <Badge
               bg="danger"

@@ -173,11 +173,11 @@ function Notifications() {
         </div>
           
           <div className="notification-stats">
-            <div className="stat-card approved">
+            <div className="stat-card1 approved">
               <h3>Approved</h3>
               <span className="stat-number">{stats.approved}</span>
             </div>
-            <div className="stat-card rejected">
+            <div className="stat-card1 rejected">
               <h3>Rejected</h3>
               <span className="stat-number">{stats.rejected}</span>
             </div>

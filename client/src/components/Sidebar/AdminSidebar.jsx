@@ -138,6 +138,10 @@ function AdminSidebar({ isOpen }) {
     });
   };
 
+  const isActive = (path) => {
+    return location.pathname === path;
+  };
+
   return (
     <>
       <ToastContainer />
@@ -170,13 +174,18 @@ function AdminSidebar({ isOpen }) {
 
         {/* Navigation Links */}
         <ListGroup className="sidebar-nav mb-4">
-          <ListGroup.Item as={Link} to="/admin" className="sidebar-item" action>
+          <ListGroup.Item 
+            as={Link} 
+            to="/admin" 
+            className={`sidebar-item ${isActive('/admin') ? 'active' : ''}`} 
+            action
+          >
             <Speedometer2 className="me-3" /> Dashboard
           </ListGroup.Item>
           <ListGroup.Item
             as={Link}
             to="/requests-document"
-            className="sidebar-item"
+            className={`sidebar-item ${isActive('/requests-document') ? 'active' : ''}`}
             action
           >
             <FileEarmark className="me-3" /> Document Request
@@ -184,7 +193,7 @@ function AdminSidebar({ isOpen }) {
           <ListGroup.Item
             as={Link}
             to="/displayUsers"
-            className="sidebar-item"
+            className={`sidebar-item ${isActive('/displayUsers') ? 'active' : ''}`}
             action
           >
             <People className="me-3" /> Users
@@ -192,7 +201,7 @@ function AdminSidebar({ isOpen }) {
           <ListGroup.Item
             as={Link}
             to="/admin-notifications"
-            className="sidebar-item position-relative"
+            className={`sidebar-item position-relative ${isActive('/admin-notifications') ? 'active' : ''}`}
             action
           >
             <Bell className="me-3" />

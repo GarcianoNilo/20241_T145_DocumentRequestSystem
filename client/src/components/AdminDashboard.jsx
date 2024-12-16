@@ -16,6 +16,13 @@ import {
   ArcElement,
 } from "chart.js";
 import Swal from "sweetalert2";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { 
+  faUsers, 
+  faFileAlt, 
+  faBoxArchive 
+} from "@fortawesome/free-solid-svg-icons";
+import { Spinner } from "react-bootstrap";
 
 // Register ChartJS components
 ChartJS.register(
@@ -141,7 +148,18 @@ function AdminDashboard() {
   if (loading) {
     return (
       <div className="admin-dashboard-container">
-        <div className="loading-spinner">Loading...</div>
+        <AdminSidebar isOpen={isSidebarOpen} />
+        <div 
+          className={`admin-dashboard-content ${!isSidebarOpen ? 'sidebar-closed' : ''}`}
+          style={{ marginLeft: isSidebarOpen ? "250px" : "0" }}
+        >
+          <div className="loading-container">
+            <Spinner animation="border" role="status" variant="primary">
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
+            <p className="loading-text">Loading dashboard data...</p>
+          </div>
+        </div>
       </div>
     );
   }
@@ -178,17 +196,32 @@ function AdminDashboard() {
 
           {/* Stats Cards */}
           <div className="stats-cards">
-            <div className="stat-card">
-              <h3>Total Users</h3>
-              <p>{users.length}</p>
+            <div className="stat-card total">
+              <div className="stat-icon">
+                <FontAwesomeIcon icon={faUsers} />
+              </div>
+              <div className="stat-info">
+                <h3>Total Users</h3>
+                <p>{users.length}</p>
+              </div>
             </div>
-            <div className="stat-card">
-              <h3>Active Documents</h3>
-              <p>{documents.length}</p>
+            <div className="stat-card active">
+              <div className="stat-icon">
+                <FontAwesomeIcon icon={faFileAlt} />
+              </div>
+              <div className="stat-info">
+                <h3>Active Documents</h3>
+                <p>{documents.length}</p>
+              </div>
             </div>
-            <div className="stat-card">
-              <h3>Archived Documents</h3>
-              <p>{archivedDocs.length}</p>
+            <div className="stat-card archive">
+              <div className="stat-icon">
+                <FontAwesomeIcon icon={faBoxArchive} />
+              </div>
+              <div className="stat-info">
+                <h3>Archived Documents</h3>
+                <p>{archivedDocs.length}</p>
+              </div>
             </div>
           </div>
 

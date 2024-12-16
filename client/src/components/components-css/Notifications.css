@@ -85,7 +85,7 @@
   margin-bottom: 20px;
 }
 
-.stat-card {
+.stat-card1 {
   flex: 1;
   padding: 20px;
   border-radius: 8px;
@@ -94,21 +94,21 @@
   transition: transform 0.2s;
 }
 
-.stat-card:hover {
+.stat-card1:hover {
   transform: translateY(-2px);
 }
 
-.stat-card.approved {
+.stat-card1.approved {
   background-color: #28a745;
   box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2);
 }
 
-.stat-card.rejected {
+.stat-card1.rejected {
   background-color: #dc3545;
   box-shadow: 0 2px 4px rgba(220, 53, 69, 0.2);
 }
 
-.stat-card h3 {
+.stat-card1 h3 {
   margin: 0;
   font-size: 1.1rem;
   opacity: 0.9;
@@ -128,7 +128,7 @@
     gap: 10px;
   }
 
-  .stat-card {
+  .stat-card1 {
     padding: 15px;
   }
 

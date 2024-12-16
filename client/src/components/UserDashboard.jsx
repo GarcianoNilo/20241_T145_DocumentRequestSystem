@@ -16,6 +16,13 @@ import {
 } from "chart.js";
 import "./components-css/UserDashboard.css";
 import Footer from "./Footer";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { 
+  faFileCircleCheck, 
+  faSpinner, 
+  faCircleCheck, 
+  faCircleXmark 
+} from "@fortawesome/free-solid-svg-icons";
 
 // Register ChartJS components
 ChartJS.register(
@@ -223,21 +230,41 @@ function UserDashboard() {
 
         {/* Stats Cards */}
         <div className="stats-container">
-          <div className="stat-card">
-            <h3>Total Requests</h3>
-            <p className="stat-number">{documentStats.total}</p>
+          <div className="stat-card total">
+            <div className="stat-icon">
+              <FontAwesomeIcon icon={faFileCircleCheck} />
+            </div>
+            <div className="stat-info">
+              <h3>Total Requests</h3>
+              <p className="stat-number">{documentStats.total}</p>
+            </div>
           </div>
-          <div className="stat-card">
-            <h3>Pending</h3>
-            <p className="stat-number pending">{documentStats.pending}</p>
+          <div className="stat-card pending">
+            <div className="stat-icon">
+              <FontAwesomeIcon icon={faSpinner} />
+            </div>
+            <div className="stat-info">
+              <h3>Pending</h3>
+              <p className="stat-number pending">{documentStats.pending}</p>
+            </div>
           </div>
-          <div className="stat-card">
-            <h3>Approved</h3>
-            <p className="stat-number approved">{documentStats.approved}</p>
+          <div className="stat-card approved">
+            <div className="stat-icon">
+              <FontAwesomeIcon icon={faCircleCheck} />
+            </div>
+            <div className="stat-info">
+              <h3>Approved</h3>
+              <p className="stat-number approved">{documentStats.approved}</p>
+            </div>
           </div>
-          <div className="stat-card">
-            <h3>Rejected</h3>
-            <p className="stat-number rejected">{documentStats.rejected}</p>
+          <div className="stat-card rejected">
+            <div className="stat-icon">
+              <FontAwesomeIcon icon={faCircleXmark} />
+            </div>
+            <div className="stat-info">
+              <h3>Rejected</h3>
+              <p className="stat-number rejected">{documentStats.rejected}</p>
+            </div>
           </div>
         </div>
 

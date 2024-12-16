@@ -148,14 +148,52 @@ button.hamburger-icon svg {
   border-radius: 15px;
   box-shadow: 4px 4px 4px rgba(26, 95, 122, 0.7);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  font-size: 1.5rem;
+}
+
+.stat-info {
+  flex: 1;
+}
+
+/* Icon colors and backgrounds for each card type */
+.stat-card.total .stat-icon {
+  background-color: rgba(52, 152, 219, 0.1);
+  color: #3498db;
+}
+
+.stat-card.pending .stat-icon {
+  background-color: rgba(241, 196, 15, 0.1);
+  color: #f1c40f;
+}
+
+.stat-card.approved .stat-icon {
+  background-color: rgba(46, 204, 113, 0.1);
+  color: #2ecc71;
+}
+
+.stat-card.rejected .stat-icon {
+  background-color: rgba(231, 76, 60, 0.1);
+  color: #e74c3c;
 }
 
 .stat-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 1);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
-.stat-card h3 {
+.stat-info h3 {
   color: #7f8c8d;
   font-size: 1rem;
   margin-bottom: 0.5rem;

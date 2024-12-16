@@ -3,9 +3,8 @@ import { useNavigate } from "react-router-dom";
 import UserSidebar from "../Sidebar/UserSidebar";
 import { List } from "react-bootstrap-icons";
 import DataTable from "react-data-table-component";
-import Modal from "react-modal"; // Import Modal
+import Modal from "react-modal";
 import "../components-css/UserDocuments.css";
-import StepsPanel from "../StepsPanel/StepsPanel";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -57,6 +56,7 @@ function UserDocuments() {
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [filterText, setFilterText] = useState("");
+  const [isSyncing, setIsSyncing] = useState(false);
 
   useEffect(() => {
     const token = sessionStorage.getItem("sessionToken");
@@ -403,6 +403,7 @@ function UserDocuments() {
 
   // Add new function to handle sync
   const handleSyncFromSheets = async () => {
+    setIsSyncing(true); // Start loading
     try {
       const response = await fetch(
         "http://localhost:3000/documents/sync-sheets",
@@ -415,13 +416,15 @@ function UserDocuments() {
 
       if (data.success) {
         toast.success("Successfully synced data from Google Sheets!");
-        fetchUserDocuments(userEmail); // Refresh the documents list
+        fetchUserDocuments(userEmail);
       } else {
         toast.error("Failed to sync: " + (data.error || "Unknown error"));
       }
     } catch (error) {
       console.error("Sync error:", error);
       toast.error("Error syncing from sheets: " + error.message);
+    } finally {
+      setIsSyncing(false); // End loading
     }
   };
 
@@ -483,8 +486,19 @@ function UserDocuments() {
             <button onClick={handleGoogleFormOpen} className="custom-btnA">
               Open Google Form
             </button>
-            <button onClick={handleSyncFromSheets} className="custom-btnB">
-              Sync from Sheets
+            <button 
+              onClick={handleSyncFromSheets} 
+              className="custom-btnB"
+              disabled={isSyncing}
+            >
+              {isSyncing ? (
+                <div className="button-content">
+                  <div className="spinner"></div>
+                  <span>Syncing...</span>
+                </div>
+              ) : (
+                "Sync from Sheets"
+              )}
             </button>
           </div>
 
