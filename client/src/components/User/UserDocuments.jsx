@@ -12,6 +12,7 @@ import {
   faPenToSquare,
   faBan,
   faBoxArchive,
+  faEdit,
 } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
 import Footer from "../Footer";
@@ -162,6 +163,10 @@ function UserDocuments() {
   };
 
   const handleEdit = (docID, document) => {
+    if (document.status === "Approved" || document.status === "Rejected") {
+      toast.warning("Cannot edit approved or rejected documents");
+      return;
+    }
     Swal.fire({
       title: "Edit Document",
       text: "Are you sure you want to edit this document?",
@@ -181,6 +186,13 @@ function UserDocuments() {
   const handleEditSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Create the update data object
+      const updateData = {
+        title: editingDocument.title,
+        content: editingDocument.content,
+        department: editingDocument.department,
+      };
+
       const response = await fetch(
         `http://localhost:3000/documents/${editingDocument.docID}`,
         {
@@ -188,16 +200,17 @@ function UserDocuments() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(editingDocument),
+          body: JSON.stringify(updateData),
         }
       );
 
       if (response.ok) {
         setIsEditModalOpen(false);
-        fetchUserDocuments(userEmail);
+        fetchUserDocuments(userEmail); // Refresh the documents list
         toast.success("Document updated successfully!");
       } else {
-        toast.error("Failed to update document");
+        const errorData = await response.json();
+        toast.error(errorData.message || "Failed to update document");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -206,6 +219,11 @@ function UserDocuments() {
   };
 
   const handleDelete = async (docID) => {
+    const document = documents.find(doc => doc.docID === docID);
+    if (document.status === "Approved" || document.status === "Rejected") {
+      toast.warning("Cannot cancel approved or rejected documents");
+      return;
+    }
     try {
       const result = await Swal.fire({
         title: "Cancel Document",
@@ -240,6 +258,11 @@ function UserDocuments() {
   };
 
   const handleArchive = async (docID) => {
+    const document = documents.find(doc => doc.docID === docID);
+    if (document.status === "Pending") {
+      toast.warning("Cannot archive pending documents");
+      return;
+    }
     try {
       const response = await fetch(
         `http://localhost:3000/documents/archive/${docID}`,
@@ -306,28 +329,56 @@ function UserDocuments() {
       cell: (row) => (
         <div className="action-buttons">
           <button
-            className="icon-button edit-btn"
             onClick={() => handleEdit(row.docID, row)}
-            title="Edit"
+            className="icon-button edit-btn"
+            disabled={row.status === "Approved" || row.status === "Rejected"}
+            title={
+              row.status === "Approved" || row.status === "Rejected"
+                ? "Cannot edit approved or rejected documents"
+                : "Edit"
+            }
           >
-            <FontAwesomeIcon icon={faPenToSquare} />
+            <FontAwesomeIcon 
+              icon={faEdit} 
+              style={{
+                opacity: row.status === "Approved" || row.status === "Rejected" ? 0.5 : 1
+              }}
+            />
           </button>
           <button
-            className="icon-button delete-btn"
             onClick={() => handleDelete(row.docID)}
-            title="Cancel"
+            className="icon-button delete-btn"
+            disabled={row.status === "Approved" || row.status === "Rejected"}
+            title={
+              row.status === "Approved" || row.status === "Rejected"
+                ? "Cannot cancel approved or rejected documents"
+                : "Cancel"
+            }
           >
-            <FontAwesomeIcon icon={faBan} />
+            <FontAwesomeIcon 
+              icon={faBan}
+              style={{
+                opacity: row.status === "Approved" || row.status === "Rejected" ? 0.5 : 1
+              }}
+            />
           </button>
-          {!row.isArchived && (
-            <button
-              className="icon-button archive-btn"
-              onClick={() => handleArchive(row.docID)}
-              title="Archive"
-            >
-              <FontAwesomeIcon icon={faBoxArchive} />
-            </button>
-          )}
+          <button
+            onClick={() => handleArchive(row.docID)}
+            className="icon-button archive-btn"
+            disabled={row.status === "Pending"}
+            title={
+              row.status === "Pending"
+                ? "Cannot archive pending documents"
+                : "Archive"
+            }
+          >
+            <FontAwesomeIcon 
+              icon={faBoxArchive}
+              style={{
+                opacity: row.status === "Pending" ? 0.5 : 1
+              }}
+            />
+          </button>
         </div>
       ),
     },
@@ -440,6 +491,50 @@ function UserDocuments() {
       item.status?.toLowerCase().includes(searchText)
     );
   });
+
+  // Add CSS for disabled buttons
+  const styles = `
+    .icon-button:disabled {
+      cursor: not-allowed;
+      background-color: #f5f5f5;
+    }
+
+    .icon-button:disabled:hover {
+      background-color: #f5f5f5;
+      transform: none;
+    }
+
+    /* Add tooltip styles */
+    .icon-button {
+      position: relative;
+    }
+
+    .icon-button[title]:hover:after {
+      content: attr(title);
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      white-space: nowrap;
+      z-index: 1000;
+    }
+  `;
+
+  // Add the styles to your component
+  useEffect(() => {
+    const styleSheet = document.createElement("style");
+    styleSheet.innerText = styles;
+    document.head.appendChild(styleSheet);
+
+    return () => {
+      document.head.removeChild(styleSheet);
+    };
+  }, []);
 
   return (
     <div className="user-dashboard-container">

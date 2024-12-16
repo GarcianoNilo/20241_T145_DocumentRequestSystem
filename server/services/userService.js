@@ -222,36 +222,65 @@ const createUserFromTransfer = async (req, res) => {
       return res.status(400).json({ message: "Invalid transfer request" });
     }
 
-    // Find the highest userID
-    const highestUser = await User.findOne({}, { userID: 1 }).sort({ userID: -1 });
-    let nextUserID = 1;
+    // Get all existing users and their IDs
+    const allUsers = await User.find({}).sort({ userID: 1 });
+    const userIDs = allUsers.map(user => parseInt(user.userID)).filter(id => !isNaN(id));
 
-    if (highestUser) {
-      const allUsers = await User.find({}, { userID: 1 }).sort({ userID: 1 });
-      const userIDs = allUsers.map(user => user.userID);
-      nextUserID = findNextAvailableID(userIDs);
+    // Calculate next available ID
+    let nextUserID;
+    if (userIDs.length === 0) {
+      nextUserID = 1;
+    } else {
+      // Find the maximum ID and add 1
+      nextUserID = Math.max(...userIDs) + 1;
     }
 
-    // Encrypt department
+    // Double-check that this ID is not in use
+    const existingUserWithID = await User.findOne({ userID: nextUserID.toString() });
+    if (existingUserWithID) {
+      // If somehow the ID is taken, generate a timestamp-based ID
+      nextUserID = Date.now();
+    }
+
+    // Encrypt the department before creating the user
     const encryptedDepartment = encrypt(department);
 
+    // Create new user with string ID
     const newUser = new User({
       email,
       role: 'user',
       name,
       department: encryptedDepartment,
-      userID: nextUserID
+      userID: nextUserID.toString() // Convert to string explicitly
     });
 
-    await newUser.save();
+    // Try to save with retry logic
+    let savedUser;
+    try {
+      savedUser = await newUser.save();
+    } catch (saveError) {
+      if (saveError.code === 11000) {
+        // If duplicate key error, try one more time with timestamp
+        newUser.userID = Date.now().toString();
+        savedUser = await newUser.save();
+      } else {
+        throw saveError;
+      }
+    }
+
     return res.status(201).json({
       success: true,
       message: "User created successfully from transfer",
-      user: newUser
+      user: savedUser
     });
 
   } catch (error) {
     console.error("Error creating user from transfer:", error);
+    if (error.code === 11000) {
+      return res.status(400).json({
+        message: "Unable to generate unique user ID. Please try again."
+      });
+    }
     res.status(500).json({ message: "Server error" });
   }
 };
