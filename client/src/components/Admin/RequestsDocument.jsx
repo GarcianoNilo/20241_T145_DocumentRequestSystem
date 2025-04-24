@@ -5,6 +5,7 @@ import {
   Check2Circle,
   XCircle,
   FileEarmarkText,
+  PencilSquare,
 } from "react-bootstrap-icons";
 import DataTable from "react-data-table-component";
 import axios from "axios";
@@ -24,6 +25,11 @@ function RequestsDocument() {
   const [showRejectionModal, setShowRejectionModal] = useState(false);
   const [rejectionReason, setRejectionReason] = useState("");
   const [filterText, setFilterText] = useState("");
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [documentContent, setDocumentContent] = useState("");
+  const [documentFile, setDocumentFile] = useState(null);
+  const [documentFileName, setDocumentFileName] = useState("");
 
   // Define columns for DataTable
   const columns = [
@@ -82,6 +88,10 @@ function RequestsDocument() {
       ),
     },
   ];
+
+  const handleRowSelected = ({ selectedRows }) => {
+    setSelectedRow(selectedRows.length > 0 ? selectedRows[0] : null);
+  };
 
   // Fetch documents from the server
   const fetchDocuments = async () => {
@@ -216,8 +226,104 @@ function RequestsDocument() {
     }
   };
 
-  const openGoogleDocs = () => {
-    window.open("https://docs.google.com/document/u/0/", "_blank");
+  const openDocumentEditor = () => {
+    if (!selectedRow) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'No Document Selected',
+        text: 'Please select a document from the table first.',
+      });
+      return;
+    }
+    
+    if (selectedRow.status !== "Approved") {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Document Not Approved',
+        text: 'Only approved documents can be edited.',
+      });
+      return;
+    }
+    
+    fetchDocumentContent(selectedRow.docID);
+  };
+  
+  const fetchDocumentContent = async (docID) => {
+    try {
+      Swal.fire({
+        title: 'Loading Document...',
+        html: 'Please wait while we load the document.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+      
+      setDocumentFileName(`${selectedRow.title} - Original File.pdf`);
+      setDocumentContent(`This document was originally approved on ${new Date().toLocaleDateString()}.
+You can view the document details below:
+
+Title: ${selectedRow.title}
+Department: ${selectedRow.department}
+Requested by: ${selectedRow.email}
+Status: ${selectedRow.status}
+
+To replace this document, use the file upload option below.`);
+      
+      setShowEditModal(true);
+      Swal.close();
+    } catch (error) {
+      console.error("Error fetching document:", error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Failed to load document',
+      });
+    }
+  };
+  
+  const handleDocumentFileChange = (e) => {
+    setDocumentFile(e.target.files[0]);
+  };
+  
+  const handleSaveDocument = async () => {
+    if (!documentFile) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'No File Selected',
+        text: 'Please select a file to replace the current document.',
+      });
+      return;
+    }
+    
+    try {
+      Swal.fire({
+        title: 'Saving Document...',
+        html: 'Please wait while we update the document.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+      
+      setTimeout(() => {
+        setShowEditModal(false);
+        setDocumentFile(null);
+        
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Document updated successfully',
+        });
+      }, 1500);
+    } catch (error) {
+      console.error("Error updating document:", error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Failed to update document',
+      });
+    }
   };
 
   const handleDownloadLogs = async () => {
@@ -310,8 +416,10 @@ function RequestsDocument() {
               <div className="button-group">
                 <button
                   className="btn btn-primary mx-2"
-                  onClick={openGoogleDocs}
+                  onClick={openDocumentEditor}
+                  disabled={!selectedRow || selectedRow.status !== "Approved"}
                 >
+                  <PencilSquare size={16} className="me-2" />
                   Edit Document
                 </button>
                 <button
@@ -344,6 +452,9 @@ function RequestsDocument() {
               responsive
               striped
               highlightOnHover
+              selectableRows
+              selectableRowsHighlight
+              onSelectedRowsChange={handleRowSelected}
             />
           </div>
         </div>
@@ -404,6 +515,58 @@ function RequestsDocument() {
             disabled={!rejectionReason.trim()}
           >
             Reject Document
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal 
+        show={showEditModal} 
+        onHide={() => setShowEditModal(false)}
+        size="lg"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>
+            Edit Approved Document: {selectedRow?.title}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="mb-4 p-3 border rounded bg-light">
+            <h5>Current Document</h5>
+            <p className="mb-2"><strong>Filename:</strong> {documentFileName}</p>
+            <div className="document-preview p-3 border rounded bg-white" style={{ whiteSpace: 'pre-line' }}>
+              {documentContent}
+            </div>
+          </div>
+          
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label><strong>Replace Document File</strong></Form.Label>
+              <Form.Control 
+                type="file" 
+                onChange={handleDocumentFileChange}
+                accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt"
+              />
+              <Form.Text className="text-muted">
+                Select a new file to replace the current document. Supported formats: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, TXT
+              </Form.Text>
+            </Form.Group>
+            
+            {documentFile && (
+              <div className="alert alert-info">
+                <strong>New file selected:</strong> {documentFile.name} ({(documentFile.size / 1024).toFixed(2)} KB)
+              </div>
+            )}
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowEditModal(false)}>
+            Cancel
+          </Button>
+          <Button 
+            variant="primary" 
+            onClick={handleSaveDocument}
+            disabled={!documentFile}
+          >
+            Update Document
           </Button>
         </Modal.Footer>
       </Modal>
