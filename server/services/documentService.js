@@ -153,24 +153,17 @@ const deleteDocument = async (req, res) => {
 // Update document by docID
 const updateDocument = async (req, res) => {
   const { docID } = req.params;
-  const { status, rejectionReason } = req.body;
+  const updateData = req.body;
 
   try {
-    const updateData = { status };
-    
-    if (status === "Rejected") {
-      if (!rejectionReason) {
-        return res.status(400).json({
-          success: false,
-          message: "Rejection reason is required",
-        });
-      }
-      updateData.rejectionReason = rejectionReason;
-    }
-
     const document = await Document.findOneAndUpdate(
       { docID },
-      updateData,
+      { 
+        ...updateData,
+        // Only include status and rejectionReason if they're provided
+        ...(updateData.status && { status: updateData.status }),
+        ...(updateData.rejectionReason && { rejectionReason: updateData.rejectionReason })
+      },
       { new: true }
     );
 
@@ -181,17 +174,19 @@ const updateDocument = async (req, res) => {
       });
     }
 
-    // Send email notification
-    await emailService.sendDocumentStatusEmail(
-      document.email,
-      document.title,
-      status,
-      status === "Rejected" ? rejectionReason : null
-    );
+    // Only send email notification if status is being updated
+    if (updateData.status) {
+      await emailService.sendDocumentStatusEmail(
+        document.email,
+        document.title,
+        updateData.status,
+        updateData.status === "Rejected" ? updateData.rejectionReason : null
+      );
+    }
 
     res.status(200).json({
       success: true,
-      message: `Document ${status.toLowerCase()} successfully`,
+      message: `Document updated successfully`,
       document,
     });
   } catch (error) {

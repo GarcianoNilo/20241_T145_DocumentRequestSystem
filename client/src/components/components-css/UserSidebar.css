@@ -46,12 +46,12 @@
 
 .sidebar-nav .sidebar-item:hover {
   background-color: #f0f4f8;
-  color: #4a90e2;
+  color: #1a5f7a;
   transform: translateX(5px);
 }
 
 .sidebar-nav .sidebar-item.active {
-  background-color: #4a90e2;
+  background-color: #1a5f7a;
   color: white !important;
   transform: translateX(5px);
   font-weight: 500;
@@ -80,7 +80,7 @@
   transform: translateY(-50%);
   height: 0;
   width: 4px;
-  background-color: #4a90e2;
+  background-color: #1a5f7a;
   border-radius: 0 4px 4px 0;
   transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   opacity: 0;
@@ -161,7 +161,7 @@
 }
 
 .sidebar-nav .sidebar-item.active:hover {
-  background: linear-gradient(145deg, #4a90e2, #357abd);
+  background-color: #1a5f7a;
 }
 
 .sidebar *, .sidebar-nav * {

@@ -89,7 +89,43 @@ function ArchiveDocuments() {
     { name: "Content", selector: (row) => row.content, sortable: true },
     { name: "Department", selector: (row) => row.department, sortable: true },
     { name: "Email", selector: (row) => row.email, sortable: true },
-    { name: "Status", selector: (row) => row.status, sortable: true },
+    {
+      name: "Status",
+      selector: (row) => row.status,
+      sortable: true,
+      cell: (row) => (
+        <div
+          style={{
+            padding: "8px 12px",
+            borderRadius: "20px",
+            fontWeight: "500",
+            fontSize: "14px",
+            backgroundColor:
+              row.status === "Pending"
+                ? "#FFF6E0"
+                : row.status === "Approved"
+                ? "#E5F3E5"
+                : row.status === "Rejected"
+                ? "#FFE9E9"
+                : row.status === "Archived"
+                ? "#F0F0F0"
+                : "transparent",
+            color:
+              row.status === "Pending"
+                ? "#FAA300"
+                : row.status === "Approved"
+                ? "#47B147"
+                : row.status === "Rejected"
+                ? "#D94343"
+                : row.status === "Archived"
+                ? "#666666"
+                : "black",
+          }}
+        >
+          {row.status}
+        </div>
+      ),
+    },
     {
       name: "Actions",
       cell: (row) => (
