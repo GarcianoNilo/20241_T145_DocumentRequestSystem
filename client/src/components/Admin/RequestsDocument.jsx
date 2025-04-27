@@ -14,8 +14,12 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Swal from 'sweetalert2';
+import PDFGenerator from "./PDFGenerator";
+import { preparePdfData } from '../../services/pdfDataService';
+import { downloadPdf } from '../../services/pdfGenerationService';
 
 function RequestsDocument() {
+  // Existing state variables
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -30,6 +34,86 @@ function RequestsDocument() {
   const [documentContent, setDocumentContent] = useState("");
   const [documentFile, setDocumentFile] = useState(null);
   const [documentFileName, setDocumentFileName] = useState("");
+  const [showPdfGenerator, setShowPdfGenerator] = useState(false);
+  
+  // New state for status filtering
+  const [statusFilter, setStatusFilter] = useState('All');
+  const [showStatusFilter, setShowStatusFilter] = useState(false);
+  const [selectedRows, setSelectedRows] = useState([]);
+  
+  // Status filter options
+  const statusFilterOptions = ['All', 'Approved', 'Rejected', 'Pending'];
+
+  // Fetch documents from the server
+  const fetchDocuments = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get("http://localhost:3000/documents/");
+      // Prioritize pending documents
+      const sortedDocs = response.data.sort((a, b) => (a.status === "Pending" ? -1 : 1));
+      setDocuments(sortedDocs);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching documents:", error);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchDocuments();
+  }, []);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  // Apply status filter and select matching rows
+  const applyStatusFilter = (status) => {
+    setStatusFilter(status);
+    setShowStatusFilter(false);
+    
+    // Select rows based on filter
+    if (status === 'All') {
+      // No automatic selection for "All"
+      setSelectedRows([]);
+    } else {
+      // Select rows matching the status
+      const filtered = documents.filter(doc => doc.status === status);
+      setSelectedRows(filtered);
+    }
+  };
+
+  // Handle row selection
+  const handleRowSelected = ({ selectedRows }) => {
+    setSelectedRow(selectedRows.length > 0 ? selectedRows[0] : null);
+    setSelectedRows(selectedRows);
+  };
+
+  // Modified PDF generation to use selected rows
+  const handleGeneratePDF = () => {
+    if (selectedRows.length === 0) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'No Documents Selected',
+        text: 'Please select documents from the table first or use the status filter.',
+      });
+      return;
+    }
+    
+    setShowPdfGenerator(true);
+  };
+
+  // Filter documents based on search text
+  const filteredItems = documents.filter((item) => {
+    const searchText = filterText.toLowerCase();
+    return (
+      item.docID?.toString().toLowerCase().includes(searchText) ||
+      item.title?.toLowerCase().includes(searchText) ||
+      item.department?.toLowerCase().includes(searchText) ||
+      item.email?.toLowerCase().includes(searchText) ||
+      item.status?.toLowerCase().includes(searchText)
+    );
+  });
 
   // Define columns for DataTable
   const columns = [
@@ -88,33 +172,6 @@ function RequestsDocument() {
       ),
     },
   ];
-
-  const handleRowSelected = ({ selectedRows }) => {
-    setSelectedRow(selectedRows.length > 0 ? selectedRows[0] : null);
-  };
-
-  // Fetch documents from the server
-  const fetchDocuments = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get("http://localhost:3000/documents/");
-      // Prioritize pending documents
-      const sortedDocs = response.data.sort((a, b) => (a.status === "Pending" ? -1 : 1));
-      setDocuments(sortedDocs);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching documents:", error);
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchDocuments();
-  }, []);
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
 
   const handleApproveClick = (docID) => {
     setSelectedDocID(docID);
@@ -372,20 +429,71 @@ To replace this document, use the file upload option below.`);
     }
   };
 
-  const filteredItems = documents.filter((item) => {
-    const searchText = filterText.toLowerCase();
-    return (
-      item.docID?.toString().toLowerCase().includes(searchText) ||
-      item.title?.toLowerCase().includes(searchText) ||
-      item.department?.toLowerCase().includes(searchText) ||
-      item.email?.toLowerCase().includes(searchText) ||
-      item.status?.toLowerCase().includes(searchText)
-    );
-  });
+  const handleDirectPdfDownload = async () => {
+    if (!selectedRow) return;
+    
+    try {
+      Swal.fire({
+        title: 'Generating PDF...',
+        text: 'Please wait while we create your document.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+      
+      const pdfData = {
+        // Same data as above in handleGeneratePDF
+        formNumber: `REQ-${selectedRow.docID}`,
+        docCode: `${selectedRow.docID}`,
+        date: new Date().toISOString().split('T')[0],
+        requestorName: selectedRow.email,
+        requestorOffice: selectedRow.department,
+        targetOffice: 'Quality Assurance Office',
+        purpose: selectedRow.title,
+        // Check a default option
+        isaChecked: true,
+        documentRows: [
+          {
+            area: selectedRow.department,
+            docName: selectedRow.title,
+            status: selectedRow.status
+          }
+        ],
+        effectivityDate: new Date().toISOString().split('T')[0],
+        requestorDate: new Date().toISOString().split('T')[0],
+        adminDate: new Date().toISOString().split('T')[0]
+      };
+      
+      await downloadPdf(pdfData, `QAU-Request-${selectedRow.docID}.pdf`);
+      
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: 'PDF has been generated and downloaded.',
+      });
+    } catch (error) {
+      console.error('Error generating direct PDF:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'There was an error generating the PDF. Please try again.',
+      });
+    }
+  };
 
   return (
     <div className="admin-dashboard-container">
       <AdminSidebar isOpen={isSidebarOpen} />
+      
+      {showPdfGenerator && (
+        <PDFGenerator
+          documentData={selectedRows[0]}  // Primary row for form data
+          selectedDocuments={selectedRows} // All selected documents
+          onClose={() => setShowPdfGenerator(false)}
+        />
+      )}
+      
       <div
         className={`admin-dashboard-content ${
           !isSidebarOpen ? "sidebar-closed" : ""
@@ -405,14 +513,13 @@ To replace this document, use the file upload option below.`);
             }}
           >
             <div>
-              
-          <div className="dashboard-header">
-            <p style={{ opacity: 0.7 }}>
-              <i>Quality Assurance Office's Document Request System</i>
-            </p>
-              <h1>Requested Documents</h1>
-            <p>Welcome to your document management analytics dashboard</p>
-          </div>
+              <div className="dashboard-header">
+                <p style={{ opacity: 0.7 }}>
+                  <i>Quality Assurance Office's Document Request System</i>
+                </p>
+                <h1>Requested Documents</h1>
+                <p>Welcome to your document management analytics dashboard</p>
+              </div>
               <div className="button-group">
                 <button
                   className="btn btn-primary mx-2"
@@ -429,8 +536,49 @@ To replace this document, use the file upload option below.`);
                   <FileEarmarkText size={16} className="me-2" />
                   Download Logs
                 </button>
+                
+                {/* Status filter dropdown and Generate PDF button */}
+                <div className="btn-group">
+                  <button
+                    className="btn btn-success"
+                    onClick={handleGeneratePDF}
+                    disabled={selectedRows.length === 0}
+                  >
+                    <i className="bi bi-file-pdf me-2"></i>
+                    Generate PDF Form {selectedRows.length > 0 && `(${selectedRows.length})`}
+                  </button>
+                  <button 
+                    type="button" 
+                    className="btn btn-success dropdown-toggle dropdown-toggle-split" 
+                    onClick={() => setShowStatusFilter(!showStatusFilter)}
+                  >
+                    <span className="visually-hidden">Toggle Dropdown</span>
+                  </button>
+                  
+                  {showStatusFilter && (
+                    <div className="status-filter-dropdown">
+                      <div className="filter-header">Filter by Status:</div>
+                      {statusFilterOptions.map(status => (
+                        <button
+                          key={status}
+                          className={`filter-item ${statusFilter === status ? 'active' : ''}`}
+                          data-status={status}
+                          onClick={() => applyStatusFilter(status)}
+                        >
+                          {status === 'All' ? 'All Documents' : status}
+                          {status !== 'All' && (
+                            <span className="badge-count">
+                              {documents.filter(doc => doc.status === status).length}
+                            </span>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
-              <div className="search-container" style={{ marginLeft: "15px" }}>
+            </div>
+            <div className="search-container" style={{ marginLeft: "15px" }}>
               <input
                 type="text"
                 className="search-input"
@@ -439,9 +587,8 @@ To replace this document, use the file upload option below.`);
                 onChange={(e) => setFilterText(e.target.value)}
               />
             </div>
-            </div>
-         
           </div>
+          
           <div className="requests-document-section">
             <DataTable
               title=""
